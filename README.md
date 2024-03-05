@@ -1,5 +1,10 @@
 # kickstart.nvim
 
+## TLDR
+* all requirements installed?
+=> Execute this at ~/.config (macOs, Linux):    
+`git clone git@github.com:vveil/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim nvim`
+
 ## Introduction
 
 A starting point for Neovim that is:
@@ -46,9 +51,6 @@ Neovim's configurations are located under the following paths, depending on your
 ### Install Kickstart
 
 Clone kickstart.nvim:
-
-Execute this at ~/.config (macOs, Linux):
-`git clone git@github.com:vveil/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim nvim`
 
 <details><summary> Linux and Mac </summary>
 
