@@ -571,7 +571,11 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
         tailwindcss = {},
-        --
+        -- sourcekit = {
+        --   cmd = {
+        --     '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp',
+        --   },
+        -- },
 
         lua_ls = {
           -- cmd = {...},
@@ -587,6 +591,10 @@ require('lazy').setup({
             },
           },
         },
+      }
+
+      require('lspconfig').sourcekit.setup {
+        cmd = { '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp' },
       }
 
       -- Ensure the servers and tools above are installed
@@ -868,7 +876,6 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
