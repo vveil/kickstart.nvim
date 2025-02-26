@@ -8,36 +8,6 @@ return {
     lazy = false,
   },
   {
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    lazy = false,
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup {
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          debounce = 75,
-          keymap = {
-            accept = '<M-l>',
-            accept_word = false,
-            accept_line = false,
-            next = '<M-]>',
-            prev = '<M-[>',
-            dismiss = '<C-]>',
-          },
-        },
-        filetypes = {
-          javascript = true, -- allow specific filetype
-          typescript = true, -- allow specific filetype
-          cpp = true, -- allow specific filetype
-          hpp = true, -- allow specific filetype
-          ['*'] = false, -- disable for all other filetypes and ignore default `filetypes`
-        },
-      }
-    end,
-  },
-  {
     'tpope/vim-dadbod',
   },
   {
