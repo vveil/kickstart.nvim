@@ -899,6 +899,13 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
+      local comment = require 'mini.comment'
+      comment.setup {
+        options = {
+          comment_string = { cpp = '// %s', c = '// %s', hpp = '// %s', h = '// %s' },
+        },
+      }
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -909,7 +916,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'cpp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -989,3 +996,10 @@ vim.cmd.colorscheme 'catppuccin-mocha'
 -- vim.cmd.colorscheme 'atomic'
 
 vim.o.diffopt = 'internal,filler,closeoff,linematch:60'
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp', 'h', 'hpp' },
+  callback = function()
+    vim.opt_local.commentstring = '// %s'
+  end,
+})
