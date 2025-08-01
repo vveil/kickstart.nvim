@@ -1,6 +1,11 @@
+local uuid = require 'uuid-nvim'
+
 -- Swap the p and P to not mess up the clipbard with replaced text
 -- but leave the ability to paste the text
 vim.keymap.set('x', 'p', 'P', {})
 vim.keymap.set('x', 'P', 'p', {})
 
 vim.keymap.set('n', '<leader>cR', '<cmd> ClangdSwitchSourceHeader<CR>', { desc = 'Switch Source/FileHeader C/C++', noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>ut', uuid.toggle_highlighting, { desc = '[U]uid highlight [t]oggle' })
+vim.keymap.set('n', '<leader>ui', uuid.insert_v4, { desc = '[U]uid [i]nsert' })

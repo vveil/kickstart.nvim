@@ -37,7 +37,7 @@ return {
     },
     build = 'make tiktoken', -- Only on MacOS or Linux
     opts = {
-      -- model = 'Llama-3.3-70B-Instruct',
+      model = 'gpt-4o-mini',
     },
     -- See Commands section for default commands if you want to lazy load on them
   },

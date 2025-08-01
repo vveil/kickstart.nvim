@@ -352,6 +352,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      require('custom.telescope.multigrep').setup()
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -568,7 +570,6 @@ require('lazy').setup({
             '--header-insertion=never',
             '--fallback-style=llvm',
             '--offset-encoding=utf-16',
-            -- '--fallback=style=webkit',
           },
         },
         codelldb = {},
@@ -580,8 +581,7 @@ require('lazy').setup({
         --     },
         --   },
         -- },
-        -- clang_format = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -662,12 +662,16 @@ require('lazy').setup({
       },
     },
     opts = {
+      log_level = vim.log.levels.DEBUG,
       notify_on_error = false,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = false, cpp = false }
+        local disable_filetypes = {
+          c = false,
+          cpp = false,
+        }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
@@ -681,11 +685,20 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        cpp = { 'clang_format' },
+        c = { 'clang_format' },
+        h = { 'clang_format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      formatters = {
+        clang_format = {
+          command = '/usr/local/bin/clang-format',
+          args = { '-style=file:/home/dev/ds4/ds4/git/.clang-format', '-assume-filename', '$FILENAME' },
+        },
       },
     },
   },
@@ -1003,3 +1016,10 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.commentstring = '// %s'
   end,
 })
+--
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*',
+--   callback = function(args)
+--     require('conform').format { bufnr = args.buf }
+--   end,
+-- })
