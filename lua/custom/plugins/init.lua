@@ -20,7 +20,7 @@ return {
     dependencies = {
       { 'tpope/vim-dadbod', lazy = true },
       {
-        'kristijanhusak/vim-dadbod-completion',
+        { 'kristijanhusak/vim-dadbod-completion', lazy = true },
       },
     },
     cmd = {
