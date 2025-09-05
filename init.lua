@@ -1,93 +1,5 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
-
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite Neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not exactly sure of what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
-
-   NOTE: Look for lines like this
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help you understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your Neovim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -103,8 +15,6 @@ vim.o.termguicolors = true
 
 -- Make line numbers default
 vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
@@ -206,8 +116,6 @@ vim.keymap.set('n', '<C-h>', '<cmd> TmuxNavigateLeft<CR>', { desc = 'Move focus 
 vim.keymap.set('n', '<C-l>', '<cmd> TmuxNavigateRight<CR>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<cmd> TmuxNavigateDown<CR>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<cmd> TmuxNavigateUp<CR>', { desc = 'Move focus to the upper window' })
-
-vim.keymap.set('n', '<leader>cR', '<cmd> ClangdSwitchSourceHeader<CR>', { desc = 'Switch Source/FileHeader C/C++', noremap = true, silent = true })
 
 --
 -- [[ Basic Autocommands ]]
@@ -444,6 +352,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      require('custom.telescope.multigrep').setup()
+
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
@@ -569,7 +479,7 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          -- map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           -- map('<leader>rn', require('renamer').rename(), '[R]e[n]ame Symbol')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
@@ -660,7 +570,6 @@ require('lazy').setup({
             '--header-insertion=never',
             '--fallback-style=llvm',
             '--offset-encoding=utf-16',
-            -- '--fallback=style=webkit',
           },
         },
         codelldb = {},
@@ -672,8 +581,7 @@ require('lazy').setup({
         --     },
         --   },
         -- },
-        -- clang_format = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -754,12 +662,16 @@ require('lazy').setup({
       },
     },
     opts = {
+      log_level = vim.log.levels.DEBUG,
       notify_on_error = false,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = false, cpp = false }
+        local disable_filetypes = {
+          c = false,
+          cpp = false,
+        }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
@@ -773,11 +685,20 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        cpp = { 'clang_format' },
+        c = { 'clang_format' },
+        h = { 'clang_format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      formatters = {
+        clang_format = {
+          command = '/usr/local/bin/clang-format',
+          args = { '-style=file:/home/dev/ds4/ds4/git/.clang-format', '-assume-filename', '$FILENAME' },
+        },
       },
     },
   },
@@ -935,11 +856,11 @@ require('lazy').setup({
     'catppuccin/nvim',
     name = 'catppuccin',
     priority = 1000,
-    -- init = function()
-    --   vim.cmd.colorscheme 'catppuccin-mocha'
-    -- end,
+    init = function()
+      vim.cmd.colorscheme 'catppuccin-mocha'
+    end,
     opts = {
-      transparent_background = true,
+      -- transparent_background = true,
       background = {
         dark = 'mocha',
         light = 'mocha',
@@ -991,6 +912,13 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
+      local comment = require 'mini.comment'
+      comment.setup {
+        options = {
+          comment_string = { cpp = '// %s', c = '// %s', hpp = '// %s', h = '// %s' },
+        },
+      }
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -1001,7 +929,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'cpp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1046,9 +974,6 @@ require('lazy').setup({
       }
     end,
   },
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    This is the easiest way to modularize your config.
-  --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   { import = 'custom.plugins' },
   --
@@ -1077,37 +1002,24 @@ require('lazy').setup({
     },
   },
 })
+require 'custom.keymaps'
 --
 vim.cmd.colorscheme 'catppuccin-mocha'
 -- vim.cmd.colorscheme 'vesper'
 -- vim.cmd.colorscheme 'atomic'
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    if vim.env.TMUX then
-      vim.g.clipboard = {
-        name = 'tmux',
-        copy = {
-          ['+'] = 'tmux load-buffer -',
-          ['*'] = 'tmux load-buffer -',
-        },
-        paste = {
-          ['+'] = 'tmux save-buffer -',
-          ['*'] = 'tmux save-buffer -',
-        },
-        cache_enabled = false,
-      }
-      vim.opt.clipboard = 'unnamedplus'
-      print 'Tmux clipboard configured'
-    else
-      print 'Not in tmux session'
-    end
-  end,
-})
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
-      vim.fn.system('tmux load-buffer -', vim.fn.getreg '+')
-    end
-  end,
-})
+
 vim.o.diffopt = 'internal,filler,closeoff,linematch:60'
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp', 'h', 'hpp' },
+  callback = function()
+    vim.opt_local.commentstring = '// %s'
+  end,
+})
+--
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*',
+--   callback = function(args)
+--     require('conform').format { bufnr = args.buf }
+--   end,
+-- })
