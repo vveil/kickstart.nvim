@@ -9,3 +9,7 @@ vim.keymap.set('n', '<leader>cR', '<cmd> ClangdSwitchSourceHeader<CR>', { desc =
 
 vim.keymap.set('n', '<leader>ut', uuid.toggle_highlighting, { desc = '[U]uid highlight [t]oggle' })
 vim.keymap.set('n', '<leader>ui', uuid.insert_v4, { desc = '[U]uid [i]nsert' })
+
+vim.keymap.set('n', '<leader>rn', function()
+  return ':IncRename ' .. vim.fn.expand '<cword>'
+end, { desc = '[R]e[n]ame symbol', expr = true })
