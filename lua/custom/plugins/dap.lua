@@ -1,26 +1,39 @@
 local function define_colors()
-  vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#b91c1c' })
-  vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef' })
-  vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379', bold = true })
+  -- vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#b91c1c' })
+  -- vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef' })
+  -- vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379', bold = true })
+  vim.api.nvim_create_autocmd("ColorScheme", {
+      pattern = "*",
+      desc = "prevent colorscheme clears self-defined DAP icon colors.",
+      callback = function()
+      	vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#FF1A23' })
+      	vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef' })
+      	vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#9BFF7E' })
+      end
+  })
 
   vim.fn.sign_define('DapBreakpoint', {
     text = '',
     numhl = 'DapBreakpoint',
+    texthl = 'DapBreakpoint',
   })
   vim.fn.sign_define('DapBreakpointCondition', {
     text = '',
     linehl = 'DapBreakpoint',
     numhl = 'DapBreakpoint',
+    texthl = 'DapBreakpoint',
   })
   vim.fn.sign_define('DapBreakpointRejected', {
     text = '',
     linehl = 'DapBreakpoint',
     numhl = 'DapBreakpoint',
+    texthl = 'DapBreakpoint',
   })
   vim.fn.sign_define('DapStopped', {
     text = '󰜴',
     linehl = 'DapStopped',
     numhl = 'DapStopped',
+    texthl = 'DapStopped',
   })
   vim.fn.sign_define('DapLogPoint', {
     text = '🟣',
