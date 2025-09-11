@@ -23,7 +23,7 @@ return {
     },
     quickfile = { enabled = true },
     words = { enabled = true },
-    terminal = { enabled = true },
+    terminal = { enabled = true , },
     image = { enabled = true },
     scratch = { enabled = true },
   },
@@ -70,6 +70,10 @@ return {
     { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
     { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
 
+    { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
+    { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore" },
+    { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+    { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
   },
   config = function(_, opts)
     local notify = vim.notify

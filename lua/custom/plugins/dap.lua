@@ -27,7 +27,6 @@ local function define_colors()
     text = '',
     linehl = 'DapBreakpoint',
     numhl = 'DapBreakpoint',
-    texthl = 'DapBreakpoint',
   })
   vim.fn.sign_define('DapStopped', {
     text = '󰜴',
